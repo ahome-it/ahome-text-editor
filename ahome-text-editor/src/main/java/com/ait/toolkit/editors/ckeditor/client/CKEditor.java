@@ -14,7 +14,6 @@
  */
 package com.ait.toolkit.editors.ckeditor.client;
 
-import com.ait.toolkit.core.client.Util;
 import com.ait.toolkit.editors.ckeditor.client.event.HasInstanceReadyHandlers;
 import com.ait.toolkit.editors.ckeditor.client.event.HasSaveHandlers;
 import com.ait.toolkit.editors.ckeditor.client.event.InstanceReadyEvent;
@@ -57,10 +56,6 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
         HasHTML,
         HasText, HasInstanceReadyHandlers {
 
-    static {
-        Util.injectJs( CkEditorResources.INSTANCE.js() );
-    }
-
     /**
      * Used for catching Save event
      * 
@@ -68,11 +63,11 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
      * @return
      */
     private static native String getParentClassname( JavaScriptObject o ) /*-{
-                                                                          var classname = o.parentNode.getAttribute("class");
-                                                                          if (classname == null)
-                                                                          return o.parentNode.className;
-                                                                          return classname;
-                                                                          }-*/;
+		var classname = o.parentNode.getAttribute("class");
+		if (classname == null)
+			return o.parentNode.className;
+		return classname;
+    }-*/;
 
     private static class AutoSaveTimer extends Timer {
 
@@ -158,15 +153,15 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
     }
 
     private native void bindInstanceReadyEvent() /*-{
-                                                 var selfJ = this;
-                                                 var editor = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
-                                                 editor
-                                                 .on(
-                                                 'instanceReady',
-                                                 function() {
-                                                 @com.ait.toolkit.editors.ckeditor.client.event.InstanceReadyEvent::fire(Lcom/ait/toolkit/editors/ckeditor/client/event/HasInstanceReadyHandlers;Lcom/ait/toolkit/editors/ckeditor/client/CKEditor;)(selfJ, selfJ);
-                                                 });
-                                                 }-*/;
+		var selfJ = this;
+		var editor = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+		editor
+				.on(
+						'instanceReady',
+						function() {
+							@com.ait.toolkit.editors.ckeditor.client.event.InstanceReadyEvent::fire(Lcom/ait/toolkit/editors/ckeditor/client/event/HasInstanceReadyHandlers;Lcom/ait/toolkit/editors/ckeditor/client/CKEditor;)(selfJ, selfJ);
+						});
+    }-*/;
 
     private native void bindChangeEvent() /*-{
                                           var selfJ = this;
@@ -201,11 +196,11 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
     }
 
     private native void destroyInstance()/*-{
-                                         var editor = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
-                                         if (editor) {
-                                         editor.destroy();
-                                         }
-                                         }-*/;
+		var editor = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+		if (editor) {
+			editor.destroy();
+		}
+    }-*/;
 
     /**
      * {@link #getHTML()}
@@ -235,14 +230,14 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
     }
 
     private native String getNativeHTML() /*-{
-                                          var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
-                                          return e.getData();
-                                          }-*/;
+		var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+		return e.getData();
+    }-*/;
 
     public native JavaScriptObject getSelection() /*-{
-                                                  var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
-                                                  return e.getSelection();
-                                                  }-*/;
+		var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+		return e.getSelection();
+    }-*/;
 
     /**
      * Use getHTML() instead. Returns the editor text
@@ -357,33 +352,33 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
     }
 
     private native void replaceTextArea( Object o, JavaScriptObject config ) /*-{
-                                                                             this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor = $wnd.CKEDITOR
-                                                                             .replace(o, config);
-                                                                             }-*/;
+		this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor = $wnd.CKEDITOR
+				.replace(o, config);
+    }-*/;
 
     private native void setAddFocusOnLoad( boolean focus )/*-{
-                                                          var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+		var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
 
-                                                          e.on('dataReady', function(ev) {
+		e.on('dataReady', function(ev) {
 
-                                                          if (focus) {
-                                                          e.focus();
-                                                          var lastc = e.document.getBody().getLast();
-                                                          e.getSelection().selectElement(lastc);
-                                                          var range = e.getSelection().getRanges()[0];
-                                                          if (range != null) {
-                                                          range.collapse(false);
-                                                          range.setStart(lastc, range.startOffset);
-                                                          try {
-                                                          range.setEnd(lastc, range.endOffset);
-                                                          } catch (err) {
-                                                          }
-                                                          range.select();
-                                                          }
-                                                          }
+			if (focus) {
+				e.focus();
+				var lastc = e.document.getBody().getLast();
+				e.getSelection().selectElement(lastc);
+				var range = e.getSelection().getRanges()[0];
+				if (range != null) {
+					range.collapse(false);
+					range.setStart(lastc, range.startOffset);
+					try {
+						range.setEnd(lastc, range.endOffset);
+					} catch (err) {
+					}
+					range.select();
+				}
+			}
 
-                                                          });
-                                                          }-*/;
+		});
+    }-*/;
 
     /**
      * {@link #setHTML(String)}
@@ -515,29 +510,29 @@ public class CKEditor extends Composite implements HasSaveHandlers<CKEditor>, Ha
     }
 
     private native void setNativeFocus( boolean focus )/*-{
-                                                       if (focus) {
-                                                       var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
-                                                       if (e) {
-                                                       e.focus();
+		if (focus) {
+			var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+			if (e) {
+				e.focus();
 
-                                                       var lastc = e.document.getBody().getLast();
-                                                       e.getSelection().selectElement(lastc);
-                                                       var range = e.getSelection().getRanges()[0];
-                                                       range.collapse(false);
-                                                       range.setStart(lastc, range.startOffset);
-                                                       try {
-                                                       range.setEnd(lastc, range.endOffset);
-                                                       } catch (err) {
-                                                       }
-                                                       range.select();
-                                                       }
-                                                       }
-                                                       }-*/;
+				var lastc = e.document.getBody().getLast();
+				e.getSelection().selectElement(lastc);
+				var range = e.getSelection().getRanges()[0];
+				range.collapse(false);
+				range.setStart(lastc, range.startOffset);
+				try {
+					range.setEnd(lastc, range.endOffset);
+				} catch (err) {
+				}
+				range.select();
+			}
+		}
+    }-*/;
 
     private native void setNativeHTML( String html ) /*-{
-                                                     var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
-                                                     e.setData(html);
-                                                     }-*/;
+		var e = this.@com.ait.toolkit.editors.ckeditor.client.CKEditor::editor;
+		e.setData(html);
+    }-*/;
 
     /**
      * Use setHtml(String html) instead. Set the editor text
